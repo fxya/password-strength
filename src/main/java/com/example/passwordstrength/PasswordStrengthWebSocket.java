@@ -22,7 +22,16 @@ public class PasswordStrengthWebSocket implements WebSocketHandler {
     }
 
     private int calculatePasswordStrength(String password) {
-        // Implement password strength calculation logic here (score out of 100)
+        // Score the password based on its length alone (not a very good algorithm so far!)
+        if (password.length() < PasswordLength.WEAK.getValue()) {
+            return 0;
+        }
+        if (password.length() <= PasswordLength.MEDIUM.getValue()) {
+            return 50;
+        }
+        if (password.length() >= PasswordLength.STRONG.getValue()) {
+            return 100;
+        }
         return password.length();
     }
 

@@ -2,7 +2,6 @@ package com.example.passwordstrength;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -36,18 +35,46 @@ public class PasswordStrengthWebSocketTest {
         /* Verify that the session sends the correct message back to the client.
            Adjust the expected response based on your password logic as
            it is implemented. */
-        verify(session).sendMessage(new TextMessage("11"));
+        verify(session).sendMessage(new TextMessage("50"));
 
     }
 
     @Test
-    public void testHandleMessageWithEmptyString_returnsZero() throws IOException {
+    public void emptyString_returnsZero() throws IOException {
         WebSocketMessage<String> message = new TextMessage("");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
         verify(session).sendMessage(new TextMessage("0"));
+    }
+
+    @Test
+    public void stringLength_lessThanOrEqualToEight_returnsZero() throws IOException {
+        WebSocketMessage<String> message = new TextMessage("1234567");
+        PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
+
+        passwordStrengthWebSocket.handleMessage(session, message);
+
+        verify(session).sendMessage(new TextMessage("0"));
+    }
+    @Test
+    public void stringLength_greaterThanOrEqualToTwentyFive_returnsOneHundred() throws IOException {
+        WebSocketMessage<String> message = new TextMessage("1234567890123456789012345");
+        PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
+
+        passwordStrengthWebSocket.handleMessage(session, message);
+
+        verify(session).sendMessage(new TextMessage("100"));
+    }
+    @Test
+    public void stringLength_equalToSixteen_returnsFifty() throws IOException {
+        WebSocketMessage<String> message = new TextMessage("1234567890123456");
+        PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
+
+        passwordStrengthWebSocket.handleMessage(session, message);
+
+        verify(session).sendMessage(new TextMessage("50"));
     }
 
 }
