@@ -59,7 +59,7 @@ public class PasswordStrengthWebSocketTest {
         verify(session).sendMessage(new TextMessage("0"));
     }
     @Test
-    public void stringLength_greaterThanOrEqualToTwentyFive_returnsOneHundred() throws IOException {
+    public void stringLength_greaterThanOrEqualTo25_returns100() throws IOException {
         WebSocketMessage<String> message = new TextMessage("1234567890123456789012345");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
@@ -68,8 +68,36 @@ public class PasswordStrengthWebSocketTest {
         verify(session).sendMessage(new TextMessage("100"));
     }
     @Test
-    public void stringLength_equalToSixteen_returnsFifty() throws IOException {
+    public void stringLength16_returns50() throws IOException {
         WebSocketMessage<String> message = new TextMessage("1234567890123456");
+        PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
+
+        passwordStrengthWebSocket.handleMessage(session, message);
+
+        verify(session).sendMessage(new TextMessage("50"));
+    }
+
+    @Test
+    public void stringLength9_withUpperAndLowerCase_returns70() throws IOException {
+        WebSocketMessage<String> message = new TextMessage("abcDEFghi");
+        PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
+
+        passwordStrengthWebSocket.handleMessage(session, message);
+
+        verify(session).sendMessage(new TextMessage("70"));
+    }
+    @Test
+    public void stringLength9_withAllUpperCase_returns50() throws IOException {
+        WebSocketMessage<String> message = new TextMessage("ABCDEFGHI");
+        PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
+
+        passwordStrengthWebSocket.handleMessage(session, message);
+
+        verify(session).sendMessage(new TextMessage("50"));
+    }
+    @Test
+    public void stringLength9_withAllLowerCase_returns50() throws IOException {
+        WebSocketMessage<String> message = new TextMessage("ABCDEFGHI");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);

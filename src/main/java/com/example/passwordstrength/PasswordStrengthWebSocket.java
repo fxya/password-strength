@@ -22,17 +22,26 @@ public class PasswordStrengthWebSocket implements WebSocketHandler {
     }
 
     private int calculatePasswordStrength(String password) {
-        // Score the password based on its length alone (not a very good algorithm so far!)
+        int MAX_SCORE = 100;
+        int score = 0;
+
         if (password.length() < PasswordLength.WEAK.getValue()) {
             return 0;
         }
         if (password.length() <= PasswordLength.MEDIUM.getValue()) {
-            return 50;
+            score += 50;
         }
         if (password.length() >= PasswordLength.STRONG.getValue()) {
-            return 100;
+            score += 100;
         }
-        return password.length();
+        if (hasUpperAndLowerCase(password)) {
+            score += 20;
+        }
+        return Math.min(score, MAX_SCORE);
+    }
+
+    private boolean hasUpperAndLowerCase(String password) {
+        return !password.equals(password.toLowerCase()) && !password.equals(password.toUpperCase());
     }
 
     @Override
