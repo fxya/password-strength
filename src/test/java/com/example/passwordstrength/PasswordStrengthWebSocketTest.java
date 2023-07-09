@@ -35,7 +35,7 @@ public class PasswordStrengthWebSocketTest {
         /* Verify that the session sends the correct message back to the client.
            Adjust the expected response based on your password logic as
            it is implemented. */
-        verify(session).sendMessage(new TextMessage("25"));
+        verify(session).sendMessage(new TextMessage("15"));
 
     }
 
@@ -65,44 +65,75 @@ public class PasswordStrengthWebSocketTest {
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("50"));
+        verify(session).sendMessage(new TextMessage("55"));
     }
     @Test
-    public void stringLength16_returns25() throws IOException {
+    public void stringLength16_AllDigits_returns15() throws IOException {
         WebSocketMessage<String> message = new TextMessage("1234567890123456");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("25"));
+        verify(session).sendMessage(new TextMessage("15"));
     }
 
     @Test
-    public void stringLength9_withUpperAndLowerCase_returns45() throws IOException {
+    public void stringLength9_withMixedCaseNoDigits_returns30() throws IOException {
         WebSocketMessage<String> message = new TextMessage("abcDEFghi");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("45"));
+        verify(session).sendMessage(new TextMessage("30"));
     }
+
     @Test
-    public void stringLength9_withAllUpperCase_returns25() throws IOException {
+    public void stringLength9_withAllUpperCase_returns10() throws IOException {
         WebSocketMessage<String> message = new TextMessage("ABCDEFGHI");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("25"));
+        verify(session).sendMessage(new TextMessage("10"));
     }
+
     @Test
-    public void stringLength9_withAllLowerCase_returns25() throws IOException {
-        WebSocketMessage<String> message = new TextMessage("ABCDEFGHI");
+    public void stringLength9_withAllLowerCase_returns10() throws IOException {
+        WebSocketMessage<String> message = new TextMessage("abcdefghi");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("25"));
+        verify(session).sendMessage(new TextMessage("10"));
+    }
+
+    @Test
+    public void stringLength6_withMixedCaseNoRepeated_returns0() throws IOException {
+        WebSocketMessage<String> message = new TextMessage("aBcDeF");
+        PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
+
+        passwordStrengthWebSocket.handleMessage(session, message);
+
+        verify(session).sendMessage(new TextMessage("0"));
+    }
+    @Test
+    public void stringLength10_withMixedCaseNoRepeated_returns30() throws IOException {
+        WebSocketMessage<String> message = new TextMessage("aBcDeFgHiJ");
+        PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
+
+        passwordStrengthWebSocket.handleMessage(session, message);
+
+        verify(session).sendMessage(new TextMessage("30"));
+    }
+
+    @Test
+    public void stringLength17_withMixedCaseAndDigits_NoRepeated_returns50() throws IOException {
+        WebSocketMessage<String> message = new TextMessage("aBcDeFgHiJkLmNoP1");
+        PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
+
+        passwordStrengthWebSocket.handleMessage(session, message);
+
+        verify(session).sendMessage(new TextMessage("50"));
     }
 
 }

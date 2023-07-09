@@ -28,20 +28,33 @@ public class PasswordStrengthWebSocket implements WebSocketHandler {
         if (password.length() < PasswordLength.WEAK.getValue()) {
             return 0;
         }
-        if (password.length() <= PasswordLength.MEDIUM.getValue()) {
-            score += 25;
-        }
+
         if (password.length() >= PasswordLength.STRONG.getValue()) {
             score += 50;
+        } else if (password.length() > PasswordLength.MEDIUM.getValue()) {
+            score += 25;
+        } else if (password.length() > PasswordLength.WEAK.getValue()) {
+            score += 10;
         }
+
         if (hasUpperAndLowerCase(password)) {
             score += 20;
         }
+        if (hasDigit(password)) {
+            score += 5;
+        }
+
         return Math.min(score, MAX_SCORE);
     }
 
+
     private boolean hasUpperAndLowerCase(String password) {
         return !password.equals(password.toLowerCase()) && !password.equals(password.toUpperCase());
+    }
+
+    private boolean hasDigit(String password) {
+        String containsDigit = ".*\\d.*";
+        return password.matches(containsDigit);
     }
 
     @Override
