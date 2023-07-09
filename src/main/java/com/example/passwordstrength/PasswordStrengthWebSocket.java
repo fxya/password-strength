@@ -24,16 +24,17 @@ public class PasswordStrengthWebSocket implements WebSocketHandler {
     private int calculatePasswordStrength(String password) {
         int MAX_SCORE = 100;
         int score = 0;
+        int submittedPasswordLength = password.length();
 
-        if (password.length() < PasswordLength.WEAK.getValue()) {
+        if (submittedPasswordLength < PasswordLength.WEAK.getValue()) {
             return 0;
         }
 
-        if (password.length() >= PasswordLength.STRONG.getValue()) {
+        if (submittedPasswordLength >= PasswordLength.STRONG.getValue()) {
             score += 50;
-        } else if (password.length() > PasswordLength.MEDIUM.getValue()) {
+        } else if (submittedPasswordLength> PasswordLength.MEDIUM.getValue()) {
             score += 25;
-        } else if (password.length() > PasswordLength.WEAK.getValue()) {
+        } else if (submittedPasswordLength > PasswordLength.WEAK.getValue()) {
             score += 10;
         }
 
@@ -45,6 +46,7 @@ public class PasswordStrengthWebSocket implements WebSocketHandler {
         }
         score = hasRepeatedCharacters(password) ? score - 5 : score + 10;
         score = hasSpecialCharacters(password) ? score + 15 : score - 5;
+        score += submittedPasswordLength; // Add 1 point for each character
         return Math.min(score, MAX_SCORE);
     }
 

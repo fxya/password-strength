@@ -35,8 +35,8 @@ public class PasswordStrengthWebSocketTest {
         /* Verify that the session sends the correct message back to the client.
            Adjust the expected response based on your password logic as
            it is implemented. Currently, +10 (length) +5 (has digit) -5 (repeated S)
-           +15 (has special characters) */
-        verify(session).sendMessage(new TextMessage("25"));
+           +15 (has special characters) + 11 (password length) */
+        verify(session).sendMessage(new TextMessage("36"));
 
     }
 
@@ -60,73 +60,73 @@ public class PasswordStrengthWebSocketTest {
         verify(session).sendMessage(new TextMessage("0"));
     }
     @Test
-    public void stringLength_greaterThanOrEqualTo25_allDigitsNoRepeated_returns60() throws IOException {
+    public void stringLength_greaterThanOrEqualTo25_allDigitsNoRepeated_returns85() throws IOException {
         WebSocketMessage<String> message = new TextMessage("1234567890123456789012345");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("60"));
+        verify(session).sendMessage(new TextMessage("85"));
     }
 
     @Test
-    public void stringLength_greaterThanOrEqualTo25_allDigitsSomeRepeated_withSpecialChar_returns45() throws IOException {
+    public void stringLength_greaterThanOrEqualTo25_allDigitsSomeRepeated_withSpecialChar_returns90() throws IOException {
         WebSocketMessage<String> message = new TextMessage("!234567990123456799012345");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("65"));
+        verify(session).sendMessage(new TextMessage("90"));
     }
 
     @Test
-    public void stringLength16_AllDigitsNoRepeated_returns20() throws IOException {
+    public void stringLength16_AllDigitsNoRepeated_returns36() throws IOException {
         WebSocketMessage<String> message = new TextMessage("1234567890123456");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("20"));
+        verify(session).sendMessage(new TextMessage("36"));
     }
 
     @Test
-    public void stringLength9_withMixedCaseNoDigitsNoRepeated_returns35() throws IOException {
+    public void stringLength9_withMixedCaseNoDigitsNoRepeated_returns44() throws IOException {
         WebSocketMessage<String> message = new TextMessage("abcDEFghi");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("35"));
+        verify(session).sendMessage(new TextMessage("44"));
     }
 
     @Test
-    public void stringLength9_withAllUpperCaseNoRepeated_returns15() throws IOException {
+    public void stringLength9_withAllUpperCaseNoRepeated_returns24() throws IOException {
         WebSocketMessage<String> message = new TextMessage("ABCDEFGHI");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("15"));
+        verify(session).sendMessage(new TextMessage("24"));
     }
 
     @Test
-    public void stringLength9_withAllUpperCaseSomeRepeated_returns0() throws IOException {
+    public void stringLength9_withAllUpperCaseSomeRepeated_returns9() throws IOException {
         WebSocketMessage<String> message = new TextMessage("AABBCCDDE");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("0"));
+        verify(session).sendMessage(new TextMessage("9"));
     }
 
     @Test
-    public void stringLength9_withAllLowerCaseNoRepeated_returns15() throws IOException {
+    public void stringLength9_withAllLowerCaseNoRepeated_returns24() throws IOException {
         WebSocketMessage<String> message = new TextMessage("abcdefghi");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("15"));
+        verify(session).sendMessage(new TextMessage("24"));
     }
 
     @Test
@@ -139,13 +139,13 @@ public class PasswordStrengthWebSocketTest {
         verify(session).sendMessage(new TextMessage("0"));
     }
     @Test
-    public void stringLength10_withMixedCaseNoRepeated_returns35() throws IOException {
+    public void stringLength10_withMixedCaseNoRepeated_returns45() throws IOException {
         WebSocketMessage<String> message = new TextMessage("aBcDeFgHiJ");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("35"));
+        verify(session).sendMessage(new TextMessage("45"));
     }
 
     @Test
@@ -155,7 +155,7 @@ public class PasswordStrengthWebSocketTest {
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("55"));
+        verify(session).sendMessage(new TextMessage("72"));
     }
 
 }
