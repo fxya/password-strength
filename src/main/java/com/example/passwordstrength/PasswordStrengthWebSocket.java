@@ -67,6 +67,7 @@ public class PasswordStrengthWebSocket implements WebSocketHandler {
         }
         return false;
     }
+
     private boolean hasSpecialCharacters(String password) {
         String containsSpecialCharacters = ".*[!@#$%^&*()-+<>,.].*";
         return password.matches(containsSpecialCharacters);

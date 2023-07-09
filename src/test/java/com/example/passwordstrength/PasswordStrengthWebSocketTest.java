@@ -60,6 +60,7 @@ public class PasswordStrengthWebSocketTest {
 
         verify(session).sendMessage(new TextMessage("0"));
     }
+
     @Test
     public void stringLength_greaterThanOrEqualTo25_allDigitsNoRepeated_returns85() throws IOException {
         WebSocketMessage<String> message = new TextMessage("1234567890123456789012345");
@@ -139,6 +140,7 @@ public class PasswordStrengthWebSocketTest {
 
         verify(session).sendMessage(new TextMessage("0"));
     }
+
     @Test
     public void stringLength10_withMixedCaseNoRepeated_returns45() throws IOException {
         WebSocketMessage<String> message = new TextMessage("aBcDeFgHiJ");
