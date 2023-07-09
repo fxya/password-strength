@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Password Strength API</title>
 </head>
-<body>
-<h1>Password Strength API</h1>
-</body>
+    <body>
+        <div id="contents">
+            <input type="text" v-model="password" placeholder="Enter password" @input="checkPasswordStrength">
+            <p>Password Strength: {{ passwordStrength }}</p>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.22.8/babel.min.js"></script>
+        <script th:src="@{/js/index.js}" type="text/babel"></script>
+    </body>
 </html>
