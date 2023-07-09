@@ -29,10 +29,10 @@ public class PasswordStrengthWebSocket implements WebSocketHandler {
             return 0;
         }
         if (password.length() <= PasswordLength.MEDIUM.getValue()) {
-            score += 50;
+            score += 25;
         }
         if (password.length() >= PasswordLength.STRONG.getValue()) {
-            score += 100;
+            score += 50;
         }
         if (hasUpperAndLowerCase(password)) {
             score += 20;
