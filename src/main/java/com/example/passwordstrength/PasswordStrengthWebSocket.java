@@ -43,9 +43,11 @@ public class PasswordStrengthWebSocket implements WebSocketHandler {
         if (hasDigit(password)) {
             score += 5;
         }
+        score = hasRepeatedCharacters(password) ? score - 5 : score + 10;
 
         return Math.min(score, MAX_SCORE);
     }
+
 
 
     private boolean hasUpperAndLowerCase(String password) {
@@ -55,6 +57,15 @@ public class PasswordStrengthWebSocket implements WebSocketHandler {
     private boolean hasDigit(String password) {
         String containsDigit = ".*\\d.*";
         return password.matches(containsDigit);
+    }
+
+    private boolean hasRepeatedCharacters(String password) {
+        for (int i = 0; i < password.length() - 1; i++) {
+            if (password.charAt(i) == password.charAt(i + 1)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
