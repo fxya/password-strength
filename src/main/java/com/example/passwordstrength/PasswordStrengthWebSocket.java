@@ -38,16 +38,15 @@ public class PasswordStrengthWebSocket implements WebSocketHandler {
             score += 10;
         }
 
-        if (hasUpperAndLowerCase(password)) {
-            score += 20;
-        }
         if (hasDigit(password)) {
             score += 5;
         }
+
+        score = hasUpperAndLowerCase(password) ? score + 20 : score - 10;
         score = hasRepeatedCharacters(password) ? score - 5 : score + 10;
         score = hasSpecialCharacters(password) ? score + 15 : score - 5;
         score += submittedPasswordLength; // Add 1 point for each character
-        return Math.min(score, MAX_SCORE);
+        return Math.abs(Math.min(score, MAX_SCORE));
     }
 
     private boolean hasUpperAndLowerCase(String password) {

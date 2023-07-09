@@ -1,6 +1,7 @@
 package com.example.passwordstrength;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
@@ -36,7 +37,7 @@ public class PasswordStrengthWebSocketTest {
            Adjust the expected response based on your password logic as
            it is implemented. Currently, +10 (length) +5 (has digit) -5 (repeated S)
            +15 (has special characters) + 11 (password length) */
-        verify(session).sendMessage(new TextMessage("36"));
+        verify(session).sendMessage(new TextMessage("26"));
 
     }
 
@@ -66,7 +67,7 @@ public class PasswordStrengthWebSocketTest {
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("85"));
+        verify(session).sendMessage(new TextMessage("75"));
     }
 
     @Test
@@ -76,17 +77,17 @@ public class PasswordStrengthWebSocketTest {
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("90"));
+        verify(session).sendMessage(new TextMessage("80"));
     }
 
     @Test
-    public void stringLength16_AllDigitsNoRepeated_returns36() throws IOException {
+    public void stringLength16_AllDigitsNoRepeated_returns26() throws IOException {
         WebSocketMessage<String> message = new TextMessage("1234567890123456");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("36"));
+        verify(session).sendMessage(new TextMessage("26"));
     }
 
     @Test
@@ -100,33 +101,33 @@ public class PasswordStrengthWebSocketTest {
     }
 
     @Test
-    public void stringLength9_withAllUpperCaseNoRepeated_returns24() throws IOException {
+    public void stringLength9_withAllUpperCaseNoRepeated_returns14() throws IOException {
         WebSocketMessage<String> message = new TextMessage("ABCDEFGHI");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("24"));
+        verify(session).sendMessage(new TextMessage("14"));
     }
 
     @Test
-    public void stringLength9_withAllUpperCaseSomeRepeated_returns9() throws IOException {
+    public void stringLength9_withAllUpperCaseSomeRepeated_returns1() throws IOException {
         WebSocketMessage<String> message = new TextMessage("AABBCCDDE");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("9"));
+        verify(session).sendMessage(new TextMessage("1"));
     }
 
     @Test
-    public void stringLength9_withAllLowerCaseNoRepeated_returns24() throws IOException {
+    public void stringLength9_withAllLowerCaseNoRepeated_returns14() throws IOException {
         WebSocketMessage<String> message = new TextMessage("abcdefghi");
         PasswordStrengthWebSocket passwordStrengthWebSocket = new PasswordStrengthWebSocket();
 
         passwordStrengthWebSocket.handleMessage(session, message);
 
-        verify(session).sendMessage(new TextMessage("24"));
+        verify(session).sendMessage(new TextMessage("14"));
     }
 
     @Test
