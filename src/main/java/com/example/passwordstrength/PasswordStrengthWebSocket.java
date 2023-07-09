@@ -44,11 +44,9 @@ public class PasswordStrengthWebSocket implements WebSocketHandler {
             score += 5;
         }
         score = hasRepeatedCharacters(password) ? score - 5 : score + 10;
-
+        score = hasSpecialCharacters(password) ? score + 15 : score - 5;
         return Math.min(score, MAX_SCORE);
     }
-
-
 
     private boolean hasUpperAndLowerCase(String password) {
         return !password.equals(password.toLowerCase()) && !password.equals(password.toUpperCase());
@@ -60,12 +58,17 @@ public class PasswordStrengthWebSocket implements WebSocketHandler {
     }
 
     private boolean hasRepeatedCharacters(String password) {
+        // Check up until the second to last character
         for (int i = 0; i < password.length() - 1; i++) {
             if (password.charAt(i) == password.charAt(i + 1)) {
                 return true;
             }
         }
         return false;
+    }
+    private boolean hasSpecialCharacters(String password) {
+        String containsSpecialCharacters = ".*[!@#$%^&*()-+<>,.].*";
+        return password.matches(containsSpecialCharacters);
     }
 
     @Override
