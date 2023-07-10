@@ -1,7 +1,6 @@
 package com.example.passwordstrength;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -70,7 +69,7 @@ public class PasswordStrengthWebSocketTest {
     }
 
     @Test
-    public void stringLength_greaterThanOrEqualTo25_allDigitsNoRepeated_returns85() throws IOException {
+    public void stringLength_greaterThanOrEqualTo25_allDigitsNoRepeated_returns75() throws IOException {
         WebSocketMessage<String> message = new TextMessage("1234567890123456789012345");
 
         passwordStrengthWebSocket.handleMessage(session, message);
@@ -79,7 +78,7 @@ public class PasswordStrengthWebSocketTest {
     }
 
     @Test
-    public void stringLength_greaterThanOrEqualTo25_allDigitsSomeRepeated_withSpecialChar_returns90() throws IOException {
+    public void stringLength_greaterThanOrEqualTo25_allDigitsSomeRepeated_withSpecialChar_returns80() throws IOException {
         WebSocketMessage<String> message = new TextMessage("!234567990123456799012345");
 
         passwordStrengthWebSocket.handleMessage(session, message);
@@ -151,7 +150,7 @@ public class PasswordStrengthWebSocketTest {
     }
 
     @Test
-    public void stringLength17_withMixedCaseAndDigits_NoRepeated_returns55() throws IOException {
+    public void stringLength17_withMixedCaseAndDigits_NoRepeated_returns72() throws IOException {
         WebSocketMessage<String> message = new TextMessage("aBcDeFgHiJkLmNoP1");
 
         passwordStrengthWebSocket.handleMessage(session, message);
